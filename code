@@ -1,0 +1,65 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+-----------------------------------------------
+---------- ALU 8-bit VHDL ---------------------
+-----------------------------------------------
+entity ALU is
+  generic ( 
+     constant N: natural := 1  -- number of shited or rotated bits
+    );
+  
+    Port (
+    A, B     : in  signed (3 downto 0);  -- 2 inputs 4-bit
+    ALU_Sel  : in  unsigned (3 downto 0);  -- 1 input 4-bit for selecting function
+    ALU_Out   : out  signed(7 downto 0); -- 1 output 8-bit 
+    Carryout : out std_logic        -- Carryout flag
+    );
+end ALU; 
+architecture Behavioral of ALU is
+
+signal ALU_Result : signed (7 downto 0);
+signal tmp: std_logic_vector (8 downto 0);
+
+begin
+   process(A,B,ALU_Sel)
+ begin
+  case(ALU_Sel) is
+  when "0000" => -- increment A
+   ALU_Result <= A + 1 ; 
+  when "0001" => -- decrement A
+   ALU_Result <= A - 1 ;
+  when "0010" => -- transfer B
+   ALU_Result <= B;
+  when "0011" => -- increment B
+   ALU_Result <= B+1 ;
+  when "0100" => --Decrement B
+   ALU_Result <= B-1;
+  when "0101" => -- Transfer A
+   ALU_Result <= A;
+  when "0110" => --  ADDition
+   ALU_Result <= A + B ; 
+  when "0111" => -- A*2
+   ALU_Result <= shift_left(A,1);
+  when "1000" => -- Not A 
+   ALU_Result <= not A ;
+  when "1001" => -- Not B
+   ALU_Result <= not B;
+  when "1010" => -- Logical AND 
+   ALU_Result <= A and B;
+  when "1011" => -- Logical or
+   ALU_Result <= A or B;
+  when "1100" => -- Logical xor 
+   ALU_Result <= A xor B;
+  when "1101" => -- Logical xnor
+   ALU_Result <= A xnor B;
+  when "1110" => -- NAND
+   ALU_Result <= A nand B;
+  when "1111" => -- NOR   
+   ALU_Result <= A nor B;
+  end case;
+ end process;
+ ALU_Out <= ALU_Result; -- ALU out
+ tmp <= ('0' & A) + ('0' & B);
+ Carryout <= tmp(8); -- Carryout flag
+end Behavioral;
