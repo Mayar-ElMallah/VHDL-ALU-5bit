@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use IEEE.std_logic_unsigned.all;
 use IEEE.numeric_std.all;
 -----------------------------------------------
 ---------- ALU 8-bit VHDL ---------------------
@@ -7,9 +8,9 @@ use IEEE.numeric_std.all;
 entity ALU is
   
     Port (
-    A, B     : in  signed (3 downto 0);  -- 2 inputs 4-bit
-    ALU_Sel  : in STD_LOGIC_VECTOR (2 downto 0);  -- 1 input 4-bit for selecting function
-    ALU_Out   : out  signed(7 downto 0); -- 1 output 8-bit 
+    A, B     : in std_logic_vector (3 downto 0);  -- 2 inputs 4-bit
+    ALU_Sel  : in std_logic_vector (3 downto 0);  -- 1 input 4-bit for selecting function
+    ALU_Out   : out  signed (7 downto 0); -- 1 output 8-bit 
     );
 end ALU; 
 architecture Behavioral of ALU is
@@ -22,37 +23,37 @@ begin
  begin
   case(ALU_Sel) is
   when "0000" => -- increment A
-   ALU_Result <= A + 1 ; 
+   ALU_Result <= signed(A) + 1 ; 
   when "0001" => -- decrement A
-   ALU_Result <= A - 1 ;
+   ALU_Result <= signed(A) - 1 ;
   when "0010" => -- transfer B
-   ALU_Result <= B;
+   ALU_Result <= signed(B);
   when "0011" => -- increment B
-   ALU_Result <= B+1 ;
+   ALU_Result <= signed(B)+1 ;
   when "0100" => --Decrement B
-   ALU_Result <= B-1;
+   ALU_Result <= signed(B)-1;
   when "0101" => -- Transfer A
-   ALU_Result <= A;
+   ALU_Result <= signed(A);
   when "0110" => --  ADDition
-   ALU_Result <= A + B ; 
+   ALU_Result <= signed(A) +signed( B) ; 
   when "0111" => -- A*2
-   ALU_Result <= shift_left(A,1);
+   ALU_Result <= shift_left(signed(A),1);
   when "1000" => -- Not A 
-   ALU_Result <= not A ;
+   ALU_Result <= not signed(A) ;
   when "1001" => -- Not B
-   ALU_Result <= not B;
+   ALU_Result <= not signed(B);
   when "1010" => -- Logical AND 
-   ALU_Result <= A and B;
+   ALU_Result <= signed(A) and signed(B);
   when "1011" => -- Logical or
-   ALU_Result <= A or B;
+   ALU_Result <= signed(A) or signed( B);
   when "1100" => -- Logical xor 
-   ALU_Result <= A xor B;
+   ALU_Result <= signed(A) xor signed(B);
   when "1101" => -- Logical xnor
-   ALU_Result <= A xnor B;
+   ALU_Result <= signed(A) xnor signed(B);
   when "1110" => -- NAND
-   ALU_Result <= A nand B;
+   ALU_Result <= signed(A) nand signed(B);
   when "1111" => -- NOR   
-   ALU_Result <= A nor B;
+   ALU_Result <= signed(A) nor signed(B);
   when others =>
    NULL;
   end case;
