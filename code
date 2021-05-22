@@ -13,13 +13,12 @@ entity ALU is
     A, B     : in  signed (3 downto 0);  -- 2 inputs 4-bit
     ALU_Sel  : in  unsigned (3 downto 0);  -- 1 input 4-bit for selecting function
     ALU_Out   : out  signed(7 downto 0); -- 1 output 8-bit 
-    Carryout : out std_logic        -- Carryout flag
     );
 end ALU; 
 architecture Behavioral of ALU is
 
 signal ALU_Result : signed (7 downto 0);
-signal tmp: std_logic_vector (8 downto 0);
+
 
 begin
    process(A,B,ALU_Sel)
@@ -57,9 +56,9 @@ begin
    ALU_Result <= A nand B;
   when "1111" => -- NOR   
    ALU_Result <= A nor B;
+  when others =>
+   NULL;
   end case;
  end process;
  ALU_Out <= ALU_Result; -- ALU out
- tmp <= ('0' & A) + ('0' & B);
- Carryout <= tmp(8); -- Carryout flag
 end Behavioral;
