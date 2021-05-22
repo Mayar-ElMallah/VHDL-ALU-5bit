@@ -5,9 +5,6 @@ use IEEE.numeric_std.all;
 ---------- ALU 8-bit VHDL ---------------------
 -----------------------------------------------
 entity ALU is
-  generic ( 
-     constant N: natural := 1  -- number of shited or rotated bits
-    );
   
     Port (
     A, B     : in  signed (3 downto 0);  -- 2 inputs 4-bit
