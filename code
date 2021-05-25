@@ -68,8 +68,8 @@ if(rising_edge(Clk)) then      --calculations at the positive edge of clock cycl
    ALU_Result_Arithmatic <= TEMP_A;
   when "0110" => --  ADDition
    ALU_Result_Arithmatic <= TEMP_A + TEMP_B ; 
---  when "0111" => -- A*2
---   ALU_Result_Arithmatic <= TEMP_A * 2;
+when "0111" => -- A*2
+   ALU_Result_Arithmatic <= (TEMP_A(2) & TEMP_A(1) & TEMP_A(0) & '0' & '0');
 
 -- Logical operations
 
